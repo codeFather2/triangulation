@@ -29,19 +29,30 @@
         private void InitializeComponent()
         {
             this.PolygonPanel = new System.Windows.Forms.Panel();
+            this.Coordinates = new System.Windows.Forms.Label();
             this.TriangulateButton = new System.Windows.Forms.Button();
             this.ExitButton = new System.Windows.Forms.Button();
             this.ClearButton = new System.Windows.Forms.Button();
+            this.PolygonPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // PolygonPanel
             // 
             this.PolygonPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.PolygonPanel.Location = new System.Drawing.Point(13, 13);
+            this.PolygonPanel.Controls.Add(this.Coordinates);
+            this.PolygonPanel.Location = new System.Drawing.Point(13, 12);
             this.PolygonPanel.Name = "PolygonPanel";
             this.PolygonPanel.Size = new System.Drawing.Size(745, 417);
             this.PolygonPanel.TabIndex = 0;
             this.PolygonPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PolygonPanel_MouseDown);
+            // 
+            // Coordinates
+            // 
+            this.Coordinates.AutoSize = true;
+            this.Coordinates.Location = new System.Drawing.Point(653, 16);
+            this.Coordinates.Name = "Coordinates";
+            this.Coordinates.Size = new System.Drawing.Size(0, 13);
+            this.Coordinates.TabIndex = 0;
             // 
             // TriangulateButton
             // 
@@ -84,6 +95,8 @@
             this.Controls.Add(this.PolygonPanel);
             this.Name = "MainForm";
             this.Text = "Triangulation";
+            this.PolygonPanel.ResumeLayout(false);
+            this.PolygonPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -94,6 +107,7 @@
         private System.Windows.Forms.Button TriangulateButton;
         private System.Windows.Forms.Button ExitButton;
         private System.Windows.Forms.Button ClearButton;
+        private System.Windows.Forms.Label Coordinates;
     }
 }
 
