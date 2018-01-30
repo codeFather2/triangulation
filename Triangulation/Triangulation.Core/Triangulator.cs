@@ -21,7 +21,9 @@ namespace Triangulation.Core
         public List<Triangle> Triangulate()
         {
             var triangles = new List<Triangle>();
-            SortTopsClockwize();
+            //SortTopsClockwize();
+            if (_polygon.GetSquare() < 0)
+                _polygon.Reverse();
             while(_polygon.HasTriangles())
             {
                 var current = _polygon.GetCurrentTop();
@@ -42,9 +44,7 @@ namespace Triangulation.Core
         
         private void SortTopsClockwize()
         {
-            var centerX = _polygon.Tops.Sum(p => p.X) / _polygon.Tops.Count;
-            var centerY = _polygon.Tops.Sum(p => p.Y) / _polygon.Tops.Count;
-            Centroid = new Vertex(centerX, centerY);
+            Centroid = _polygon.GetCentroid();
             _polygon.Tops.Sort((top, nextTop) =>
                 GetRadialAngle(top, Centroid).CompareTo(GetRadialAngle(nextTop, Centroid))
                 );
@@ -56,8 +56,8 @@ namespace Triangulation.Core
             double aBaseY = pointA.Y - basePoint.Y;
             double bBaseX = pointB.X - basePoint.X;
             double bBaseY = pointB.Y - basePoint.Y;
-
-            return aBaseX * bBaseY - bBaseX * aBaseY < 0;
+            var res = aBaseX * bBaseY - bBaseX * aBaseY;
+            return  res < 0;
         }
 
         private bool CanBuildTriangle(Vertex pointA, Vertex basePoint, Vertex pointB)

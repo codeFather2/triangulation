@@ -14,6 +14,7 @@ namespace Triangulation.UI
 {
     public partial class MainForm : Form
     {
+        private List<PointF> _points;
         private List<Vertex> _polygonTops;
         private List<Color> _colorsForTriangles;
 
@@ -21,6 +22,7 @@ namespace Triangulation.UI
         {
             InitializeComponent();
             _polygonTops = new List<Vertex>();
+            _points = new List<PointF>();
             _colorsForTriangles = new List<Color>
             {
                 Color.Aqua,
@@ -41,10 +43,14 @@ namespace Triangulation.UI
             var point = new Point(e.X, e.Y);
             var color = new SolidBrush(Color.Red);
             Graphics g = PolygonPanel.CreateGraphics();
-            g.FillEllipse(color, point.X, point.Y, 7, 7);
+            g.FillEllipse(color, point.X  - 5, point.Y - 5, 5, 5);
             _polygonTops.Add(new Vertex(point.X, point.Y));
             Coordinates.Text += $"X: {e.X}, Y:{e.Y}\n";
-
+            if(_points.Count > 0)
+            {
+                g.DrawLine(new Pen(new SolidBrush(Color.Black)), point, _points.Last());
+            }
+            _points.Add(e.Location);
         }
 
         private void TriangulateButton_Click(object sender, EventArgs e)
@@ -68,7 +74,7 @@ namespace Triangulation.UI
                 i = i % 3 == 0 ? 0 : i;
                 foreach (var point in points)
                 {
-                    g.FillEllipse(new SolidBrush(Color.Black), point.X, point.Y, 7, 7);
+                    g.FillEllipse(new SolidBrush(Color.Black), point.X - 5, point.Y - 5, 5, 5);
                 }
             }
             _polygonTops = new List<Vertex>();
@@ -77,6 +83,9 @@ namespace Triangulation.UI
         private void ClearButton_Click(object sender, EventArgs e)
         {
             PolygonPanel.Invalidate();
+            _points = new List<PointF>();
+            _polygonTops = new List<Vertex>();
+            Coordinates.Text = string.Empty;
         }
     }
 }

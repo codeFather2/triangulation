@@ -11,5 +11,7 @@ namespace Triangulation.Core
         public Triangle(List<Vertex> tops) : base(tops)
         {
         }
+
+        
     }
 }

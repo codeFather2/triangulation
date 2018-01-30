@@ -8,7 +8,7 @@ namespace Triangulation.Core
 {
     public class Polygon
     {
-        public List<Vertex> Tops { get; private set; }
+        public List<Vertex> Tops { get;set; }
         private int _currentIndex;
         private int _countOfTops;
 
@@ -17,21 +17,42 @@ namespace Triangulation.Core
             Tops = tops;
             _countOfTops = tops.Count;
             _currentIndex = 0;
+        } 
+        
+        public void Reverse()
+        {
+            Tops.Reverse();
         }
 
-        public override string ToString()
+        public virtual Vertex GetCentroid()
         {
-            string res = string.Empty;
-            foreach (var point in Tops)
+            double x = 0;
+            double y = 0;
+            double coef = 6 * GetSquare();
+            for (int i = 0; i < _countOfTops - 1; i++)
             {
-                res += $"[{point.X},{point.Y}], ";
+                x += (Tops[i].X + Tops[i + 1].X) * (Tops[i].X * Tops[i + 1].Y - Tops[i + 1].X * Tops[i].Y);
+                y += (Tops[i].Y + Tops[i + 1].Y) * (Tops[i].X * Tops[i + 1].Y - Tops[i + 1].X * Tops[i].Y);
             }
-            return res;
+            x += Tops[_countOfTops - 1].X * Tops[0].X *
+                (Tops[_countOfTops - 1].X * Tops[0].Y - Tops[0].X * Tops[_countOfTops - 1].Y);
+            y += Tops[_countOfTops - 1].Y * Tops[0].Y *
+               (Tops[_countOfTops - 1].X * Tops[0].Y - Tops[0].X * Tops[_countOfTops - 1].Y);
+            return new Vertex(x / coef, y / coef);
+        }
+
+        public virtual double GetSquare()
+        {
+            double square = 0.0;
+            for (int i = 0; i < _countOfTops - 1; i++)
+                square += Tops[i].X * Tops[i + 1].Y - Tops[i + 1].X * Tops[i].Y;
+            square += Tops[_countOfTops - 1].X * Tops[0].Y - Tops[0].X * Tops[_countOfTops - 1].Y;
+            return square / 2;
         }
 
         public Vertex GetCurrentTop()
         {
-            if (_currentIndex == _countOfTops - 1)
+            if (_currentIndex == _countOfTops)
             {
                 _currentIndex = 0;
                 return Tops[_countOfTops - 1];

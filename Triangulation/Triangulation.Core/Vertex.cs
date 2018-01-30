@@ -4,7 +4,6 @@ namespace Triangulation.Core
 {
     public class Vertex : IComparable
     {
-        public VertexType Type { get; set; }
         public double X { get; private set; }
         public double Y { get; private set; }
 
