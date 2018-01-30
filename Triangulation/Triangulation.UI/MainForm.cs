@@ -31,6 +31,7 @@ namespace Triangulation.UI
                 Color.Yellow,
                 Color.DarkBlue
             };
+            TriangulateButton.Enabled = false;
         }
 
         private void ExitButton_Click(object sender, EventArgs e)
@@ -51,6 +52,8 @@ namespace Triangulation.UI
                 g.DrawLine(new Pen(new SolidBrush(Color.Black)), point, _points.Last());
             }
             _points.Add(e.Location);
+            if (_points.Count >= 4)
+                TriangulateButton.Enabled = true;
         }
 
         private void TriangulateButton_Click(object sender, EventArgs e)
@@ -69,6 +72,7 @@ namespace Triangulation.UI
                     points[j] = new PointF((float)top.X, (float)top.Y);
                     j++;
                 }
+                g.DrawPolygon(new Pen(new SolidBrush(Color.Black)), points);
                 g.FillPolygon(new SolidBrush(_colorsForTriangles[i]), points);
                 i++;
                 i = i % 3 == 0 ? 0 : i;

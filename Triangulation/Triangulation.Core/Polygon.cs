@@ -34,7 +34,7 @@ namespace Triangulation.Core
         {
             double x = 0;
             double y = 0;
-            double coef = 6 * GetSquare() / 2;
+            double coef = 6 * GetSquare();
             for (int i = 0; i < Tops.Count - 1; i++)
             {
                 x += (Tops[i].X + Tops[i + 1].X) * (Tops[i].X * Tops[i + 1].Y - Tops[i + 1].X * Tops[i].Y);
@@ -68,14 +68,14 @@ namespace Triangulation.Core
         public Vertex GetCentroidForBody()
         {
             var square = GetSquare();
-            long x, y;
+            double x, y;
             x = y = 0;
             foreach(Triangle triangle in Triangles)
             {
                 var triangleCentroid = triangle.GetCentroidForTops();
                 var tiangleSquare = triangle.GetSquare();
-                x += (long)(triangleCentroid.X * tiangleSquare);
-                y += (long)(triangleCentroid.Y * tiangleSquare);
+                x += (triangleCentroid.X * tiangleSquare);
+                y += (triangleCentroid.Y * tiangleSquare);
             }
             return new Vertex(x / square, y / square);
         }
