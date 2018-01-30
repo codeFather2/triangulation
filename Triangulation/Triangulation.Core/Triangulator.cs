@@ -9,7 +9,6 @@ namespace Triangulation.Core
 {
     public class Triangulator
     {
-        public Vertex Centroid { get; private set; }
         private Polygon _polygon;
 
 
@@ -18,10 +17,8 @@ namespace Triangulation.Core
             _polygon = polygon;
         }
 
-        public List<Triangle> Triangulate()
-        {
-            var triangles = new List<Triangle>();
-            //SortTopsClockwize();
+        public Polygon Triangulate()
+        {            
             if (_polygon.GetSquare() < 0)
                 _polygon.Reverse();
             while(_polygon.HasTriangles())
@@ -32,22 +29,14 @@ namespace Triangulation.Core
                 var isOk = IsLeft(previous, current, next) && CanBuildTriangle(previous, current, next);
                 if (isOk)
                 {
-                    triangles.Add(new Triangle(new List<Vertex>
+                    _polygon.Triangles.Add(new Triangle(new List<Vertex>
                     {
                        current, next, previous 
                     }));
                     _polygon.RemoveCurrentTop();
                 }
             }
-            return triangles;
-        }
-        
-        private void SortTopsClockwize()
-        {
-            Centroid = _polygon.GetCentroid();
-            _polygon.Tops.Sort((top, nextTop) =>
-                GetRadialAngle(top, Centroid).CompareTo(GetRadialAngle(nextTop, Centroid))
-                );
+            return _polygon;
         }
 
         private bool IsLeft(Vertex pointA, Vertex basePoint, Vertex pointB)
@@ -76,22 +65,6 @@ namespace Triangulation.Core
             double ca = (c.X - p.X) * (a.Y - c.Y) - (a.X - c.X) * (c.Y - p.Y);
 
             return (ab >= 0 && bc >= 0 && ca >= 0) || (ab <= 0 && bc <= 0 && ca <= 0);
-        }
-
-        private double GetRadialAngle(Vertex target, Vertex source)
-        {
-            double angle = Math.Acos((target.X - source.X) / GetEuclidianDistance(source, target));
-            if (target.Y < source.Y)
-            {
-                angle = Math.PI * 2 - angle;
-            }
-            return angle;
-        }
-
-        private double GetEuclidianDistance(Vertex source, Vertex target)
-        {
-            var distance = Math.Pow(source.X - target.X, 2) + Math.Pow(source.Y - target.Y, 2);
-            return Math.Sqrt(distance);
-        }
+        }        
     }
 }

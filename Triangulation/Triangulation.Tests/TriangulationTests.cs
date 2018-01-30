@@ -15,13 +15,15 @@ namespace Triangulation.Tests
             {
                 new Vertex(0, 0),
                 new Vertex(0, 2),
-                new Vertex(2, 0),
                 new Vertex(2, 2),
-                new Vertex(1, 0.7)
+                new Vertex(2, 0)
             });                     
             Triangulator triangulator = new Triangulator(square);
-            List<Triangle> triangles = triangulator.Triangulate();
-            Assert.AreEqual(2, triangles.Count);
+            square = triangulator.Triangulate();
+            var centroid = square.GetCentroidForBody();
+            centroid = square.GetCentroidForFrame();
+            centroid = square.GetCentroidForTops();
+            Assert.AreEqual(2, square.Triangles.Count);
         }
     }
 }

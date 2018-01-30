@@ -33,6 +33,10 @@
             this.TriangulateButton = new System.Windows.Forms.Button();
             this.ExitButton = new System.Windows.Forms.Button();
             this.ClearButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.FrameCentoid = new System.Windows.Forms.Label();
+            this.Body = new System.Windows.Forms.Label();
+            this.Tops = new System.Windows.Forms.Label();
             this.PolygonPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -84,11 +88,59 @@
             this.ClearButton.UseVisualStyleBackColor = true;
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            this.label1.Location = new System.Drawing.Point(765, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(71, 18);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Centoids:";
+            // 
+            // FrameCentoid
+            // 
+            this.FrameCentoid.AutoSize = true;
+            this.FrameCentoid.BackColor = System.Drawing.Color.Violet;
+            this.FrameCentoid.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            this.FrameCentoid.Location = new System.Drawing.Point(768, 30);
+            this.FrameCentoid.Name = "FrameCentoid";
+            this.FrameCentoid.Size = new System.Drawing.Size(51, 18);
+            this.FrameCentoid.TabIndex = 5;
+            this.FrameCentoid.Text = "Frame";
+            // 
+            // Body
+            // 
+            this.Body.AutoSize = true;
+            this.Body.BackColor = System.Drawing.Color.Black;
+            this.Body.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            this.Body.ForeColor = System.Drawing.Color.White;
+            this.Body.Location = new System.Drawing.Point(768, 48);
+            this.Body.Name = "Body";
+            this.Body.Size = new System.Drawing.Size(42, 18);
+            this.Body.TabIndex = 6;
+            this.Body.Text = "Body";
+            // 
+            // Tops
+            // 
+            this.Tops.AutoSize = true;
+            this.Tops.BackColor = System.Drawing.Color.YellowGreen;
+            this.Tops.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            this.Tops.Location = new System.Drawing.Point(768, 66);
+            this.Tops.Name = "Tops";
+            this.Tops.Size = new System.Drawing.Size(42, 18);
+            this.Tops.TabIndex = 7;
+            this.Tops.Text = "Tops";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(770, 513);
+            this.ClientSize = new System.Drawing.Size(906, 513);
+            this.Controls.Add(this.Tops);
+            this.Controls.Add(this.Body);
+            this.Controls.Add(this.FrameCentoid);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.ClearButton);
             this.Controls.Add(this.ExitButton);
             this.Controls.Add(this.TriangulateButton);
@@ -98,6 +150,7 @@
             this.PolygonPanel.ResumeLayout(false);
             this.PolygonPanel.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -108,6 +161,10 @@
         private System.Windows.Forms.Button ExitButton;
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.Label Coordinates;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label FrameCentoid;
+        private System.Windows.Forms.Label Body;
+        private System.Windows.Forms.Label Tops;
     }
 }
 

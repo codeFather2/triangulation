@@ -58,9 +58,9 @@ namespace Triangulation.UI
             Graphics g = PolygonPanel.CreateGraphics();
             var polygon = new Polygon(_polygonTops);
             var triangulator = new Triangulator(polygon);
-            List<Triangle> triangles = triangulator.Triangulate();
+            polygon = triangulator.Triangulate();
             int i = 0;
-            foreach (var triangle in triangles)
+            foreach (var triangle in polygon.Triangles)
             {
                 int j = 0;
                 var points = new PointF[3];
@@ -77,6 +77,13 @@ namespace Triangulation.UI
                     g.FillEllipse(new SolidBrush(Color.Black), point.X - 5, point.Y - 5, 5, 5);
                 }
             }
+            var centrForFrame = polygon.GetCentroidForFrame();
+            var centrForBody = polygon.GetCentroidForBody();
+            var centrForTops = polygon.GetCentroidForTops();
+
+            g.FillEllipse(new SolidBrush(Color.Violet), (float)centrForFrame.X, (float)centrForFrame.Y, 10, 10);
+            g.FillEllipse(new SolidBrush(Color.Black), (float)centrForBody.X, (float)centrForBody.Y, 10, 10);
+            g.FillEllipse(new SolidBrush(Color.YellowGreen), (float)centrForTops.X, (float)centrForTops.Y, 10, 10);
             _polygonTops = new List<Vertex>();
         }
 
