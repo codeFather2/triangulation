@@ -30,5 +30,20 @@ namespace Triangulation.Tests
             Assert.AreEqual(centroidForTops.CompareTo(centroidForBody), 0);
             Assert.AreEqual(centroidForBody.CompareTo(centroidForFrame), 0);
         }
+
+        [TestMethod]
+        public void Test_Less_Than_Two_Verticies()
+        {
+            Polygon line = new Polygon(new List<Vertex>
+            {
+                new Vertex(0, 1),
+                new Vertex(15, 7)
+            });
+            Triangulator traingulator = new Triangulator(line);
+
+            line = traingulator.Triangulate();
+
+            Assert.AreEqual(0, line.Triangles.Count);
+        }
     }
 }

@@ -78,16 +78,18 @@ namespace Triangulation.UI
                 i = i % 3 == 0 ? 0 : i;
                 foreach (var point in points)
                 {
-                    g.FillEllipse(new SolidBrush(Color.Black), point.X - 2.5f, point.Y - 2.5f, 5, 5);
+                    g.FillEllipse(new SolidBrush(Color.Yellow), point.X - 3, point.Y - 3, 6, 6);
                 }
+                var triangleCentroid = triangle.GetCentroidForTops();
+                g.FillEllipse(new SolidBrush(Color.Black), (float)triangleCentroid.X - 3, (float)triangleCentroid.Y - 3, 6, 6);
             }
             var centrForFrame = polygon.GetCentroidForFrame();
             var centrForBody = polygon.GetCentroidForBody();
             var centrForTops = polygon.GetCentroidForTops();
 
-            g.FillEllipse(new SolidBrush(Color.Violet), (float)centrForFrame.X, (float)centrForFrame.Y, 10, 10);
-            g.FillEllipse(new SolidBrush(Color.Black), (float)centrForBody.X, (float)centrForBody.Y, 12, 12);
-            g.FillEllipse(new SolidBrush(Color.YellowGreen), (float)centrForTops.X, (float)centrForTops.Y, 14, 14);
+            g.FillEllipse(new SolidBrush(Color.YellowGreen), (float)centrForTops.X - 7, (float)centrForTops.Y - 7, 14, 14);
+            g.FillEllipse(new SolidBrush(Color.Black), (float)centrForBody.X - 6, (float)centrForBody.Y - 6, 12, 12);
+            g.FillEllipse(new SolidBrush(Color.Violet), (float)centrForFrame.X - 5, (float)centrForFrame.Y - 5, 10, 10);
             _polygonTops = new List<Vertex>();
         }
 

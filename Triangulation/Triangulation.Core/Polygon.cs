@@ -44,6 +44,8 @@ namespace Triangulation.Core
 
         public Vertex GetCentroidForFrame()
         {
+            if(Tops.Count < 3)
+                return new Vertex(0, 0);
             var perimeter = GetPerimeter();
             double length;
             Vertex vectorMiddle;
@@ -66,6 +68,8 @@ namespace Triangulation.Core
 
         public Vertex GetCentroidForBody()
         {
+            if (Tops.Count < 3)
+                return new Vertex(0, 0);
             var square = GetSquare();
             double x, y;
             x = y = 0;
