@@ -82,6 +82,8 @@ namespace Triangulation.Core
 
         public virtual double GetSquare()
         {
+            if (Tops.Count <= 2)
+                return 0;
             double square = 0.0;
             for (int i = 0; i < Tops.Count - 1; i++)
                 square += Tops[i].X * Tops[i + 1].Y - Tops[i + 1].X * Tops[i].Y;
@@ -91,6 +93,8 @@ namespace Triangulation.Core
 
         public double GetPerimeter()
         {
+            if (Tops.Count < 2)
+                return 0;
             double result = 0.0;
             for (int i = 0; i <= Tops.Count - 2; i++)
                 result += Geometry.GetEuclidianDistance(Tops[i], Tops[i + 1]);

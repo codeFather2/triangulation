@@ -44,7 +44,7 @@ namespace Triangulation.UI
             var point = new Point(e.X, e.Y);
             var color = new SolidBrush(Color.Red);
             Graphics g = PolygonPanel.CreateGraphics();
-            g.FillEllipse(color, point.X  - 5, point.Y - 5, 5, 5);
+            g.FillEllipse(color, point.X  - 2.5f, point.Y - 2.5f, 5, 5);
             _polygonTops.Add(new Vertex(point.X, point.Y));
             Coordinates.Text += $"X: {e.X}, Y:{e.Y}\n";
             if(_points.Count > 0)
@@ -78,7 +78,7 @@ namespace Triangulation.UI
                 i = i % 3 == 0 ? 0 : i;
                 foreach (var point in points)
                 {
-                    g.FillEllipse(new SolidBrush(Color.Black), point.X - 5, point.Y - 5, 5, 5);
+                    g.FillEllipse(new SolidBrush(Color.Black), point.X - 2.5f, point.Y - 2.5f, 5, 5);
                 }
             }
             var centrForFrame = polygon.GetCentroidForFrame();

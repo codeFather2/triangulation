@@ -14,9 +14,9 @@ namespace Triangulation.Tests
             Polygon square = new Polygon(new List<Vertex>
             {
                 new Vertex(0, 0),
-                new Vertex(0, 2),
-                new Vertex(2, 2),
-                new Vertex(2, 0)
+                new Vertex(0, 2000),
+                new Vertex(2000, 2000),
+                new Vertex(2000, 0)
             });                     
             Triangulator triangulator = new Triangulator(square);
 

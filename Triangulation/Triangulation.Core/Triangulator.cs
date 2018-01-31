@@ -18,7 +18,7 @@ namespace Triangulation.Core
         }
 
         public Polygon Triangulate()
-        {            
+        {
             if (_polygon.GetSquare() < 0)
                 _polygon.Reverse();
             while(_polygon.HasTriangles())
