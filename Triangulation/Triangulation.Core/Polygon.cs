@@ -97,6 +97,8 @@ namespace Triangulation.Core
             result += Geometry.GetEuclidianDistance(Tops[0], Tops[_countOfTopsForTriangulation - 1]);
             return result;
         }
+        
+        #region MoveByTops
 
         public Vertex GetCurrentTop()
         {
@@ -128,6 +130,7 @@ namespace Triangulation.Core
             _countOfTopsForTriangulation--;
             _currentIndex = _currentIndex == 0 ? _currentIndex : _currentIndex - 1;
         }
+        #endregion
 
         public bool HasTriangles()
         {
