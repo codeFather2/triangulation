@@ -19,11 +19,16 @@ namespace Triangulation.Tests
                 new Vertex(2, 0)
             });                     
             Triangulator triangulator = new Triangulator(square);
+
             square = triangulator.Triangulate();
-            var centroid = square.GetCentroidForBody();
-            centroid = square.GetCentroidForFrame();
-            centroid = square.GetCentroidForTops();
+            var centroidForBody = square.GetCentroidForBody();
+            var centroidForFrame = square.GetCentroidForFrame();
+            var centroidForTops = square.GetCentroidForTops();
+
             Assert.AreEqual(2, square.Triangles.Count);
+            Assert.AreEqual(centroidForTops.CompareTo(centroidForFrame), 0);
+            Assert.AreEqual(centroidForTops.CompareTo(centroidForBody), 0);
+            Assert.AreEqual(centroidForBody.CompareTo(centroidForFrame), 0);
         }
     }
 }

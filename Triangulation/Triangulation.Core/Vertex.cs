@@ -21,13 +21,13 @@ namespace Triangulation.Core
             bool biggerByY = Y > compareTo.Y;
             bool biggerByX = Math.Abs(Y - compareTo.Y) < tolerance && X > compareTo.X;
             bool isEqual = Math.Abs(Y - compareTo.Y) < tolerance && Math.Abs(X - compareTo.X) < tolerance;
+            if (isEqual)
+            {
+                return 0;
+            }
             if (biggerByY || biggerByX)
             {
                 return 1;
-            }
-            else if(isEqual)
-            {
-                return 0;
             }
             return -1;
         }
