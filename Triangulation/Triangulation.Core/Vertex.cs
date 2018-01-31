@@ -2,7 +2,7 @@
 
 namespace Triangulation.Core
 {
-    public class Vertex : IComparable
+    public class Vertex : IComparable, ICloneable
     {
         public double X { get; private set; }
         public double Y { get; private set; }
@@ -35,6 +35,11 @@ namespace Triangulation.Core
         public override string ToString()
         {
             return $"[{X},{Y}]";
+        }
+
+        public object Clone()
+        {
+            return new Vertex(X, Y);
         }
     }
 }

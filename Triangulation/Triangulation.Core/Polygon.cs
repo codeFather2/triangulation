@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace Triangulation.Core
 {
-    public class Polygon
+    public class Polygon: ICloneable
     {
         public List<Vertex> Tops { get;set; }
         public List<Triangle> Triangles { get; set; }
-        private List<Vertex> _topsForTriangulating;
+        public List<Vertex> TopsForTriangulating { get; private set; }
         private int _currentIndex;
         private int _countOfTopsForTriangulation;
 
         public Polygon(List<Vertex> tops)
         {
             Tops = tops;
-            _topsForTriangulating = new List<Vertex>(tops);
+            TopsForTriangulating = new List<Vertex>(tops);
             Triangles = new List<Triangle>();
             _countOfTopsForTriangulation = tops.Count;
             _currentIndex = 0;
@@ -26,7 +26,7 @@ namespace Triangulation.Core
         public void Reverse()
         {
             Tops.Reverse();
-            _topsForTriangulating.Reverse();
+            TopsForTriangulating.Reverse();
         }
 
         #region Centroids
@@ -113,28 +113,28 @@ namespace Triangulation.Core
             if (_currentIndex == _countOfTopsForTriangulation)
             {
                 _currentIndex = 0;
-                return _topsForTriangulating[_countOfTopsForTriangulation - 1];
+                return TopsForTriangulating[_countOfTopsForTriangulation - 1];
             }
-            return _topsForTriangulating[_currentIndex];
+            return TopsForTriangulating[_currentIndex];
         }
 
         public Vertex GetNextTop()
         {
             if (_currentIndex == _countOfTopsForTriangulation - 1)
-                return _topsForTriangulating[0];
-            return _topsForTriangulating[_currentIndex + 1];
+                return TopsForTriangulating[0];
+            return TopsForTriangulating[_currentIndex + 1];
         }
 
         public Vertex GetPreviousTop()
         {
             if (_currentIndex == 0)
-                return _topsForTriangulating[_countOfTopsForTriangulation - 1];
-            return _topsForTriangulating[_currentIndex - 1];
+                return TopsForTriangulating[_countOfTopsForTriangulation - 1];
+            return TopsForTriangulating[_currentIndex - 1];
         }
 
         public void RemoveCurrentTop()
         {
-            _topsForTriangulating.RemoveAt(_currentIndex);
+            TopsForTriangulating.RemoveAt(_currentIndex);
             _countOfTopsForTriangulation--;
             _currentIndex = _currentIndex == 0 ? _currentIndex : _currentIndex - 1;
         }
@@ -149,6 +149,24 @@ namespace Triangulation.Core
         public int CurrentIndex()
         {
             return _currentIndex;
+        }
+
+        public object Clone()
+        {
+            var newPolygon = this.MemberwiseClone() as Polygon ?? new Polygon(new List<Vertex>());
+            List<Triangle> triangles = new List<Triangle>();
+            List<Vertex> tops = new List<Vertex>();
+            foreach (var top in Tops)
+            {
+                tops.Add((Vertex)top.Clone());
+            }
+            foreach (var triangle in Triangles)
+            {
+                triangles.Add((Triangle)triangle.Clone());
+            }
+            newPolygon.Triangles = triangles;
+            newPolygon.Tops = tops;
+            return newPolygon;
         }
     }
 }

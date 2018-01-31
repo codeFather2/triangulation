@@ -14,7 +14,7 @@ namespace Triangulation.Core
 
         public Triangulator(Polygon polygon)
         {
-            _polygon = polygon;
+            _polygon = polygon.Clone() as Polygon;
         }
 
         public Polygon Triangulate()
@@ -54,7 +54,7 @@ namespace Triangulation.Core
 
         private bool CanBuildTriangle(Vertex pointA, Vertex basePoint, Vertex pointB)
         {
-            var tops = _polygon.Tops.Where(x => x != basePoint && x != pointA && x != pointB).ToList();
+            var tops = _polygon.TopsForTriangulating.Where(x => x != basePoint && x != pointA && x != pointB).ToList();
             for (int i = 0; i < tops.Count; i++)
                     if (IsPointInside(pointA, basePoint, pointB, tops[i]))
                         return false;
