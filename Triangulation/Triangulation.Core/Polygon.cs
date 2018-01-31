@@ -34,13 +34,14 @@ namespace Triangulation.Core
         {
             double x = 0;
             double y = 0;
-            double coef = 6 * GetSquare();
             for (int i = 0; i < Tops.Count - 1; i++)
             {
-                x += (Tops[i].X + Tops[i + 1].X) * (Tops[i].X * Tops[i + 1].Y - Tops[i + 1].X * Tops[i].Y);
-                y += (Tops[i].Y + Tops[i + 1].Y) * (Tops[i].X * Tops[i + 1].Y - Tops[i + 1].X * Tops[i].Y);
+                x += (Tops[i].X + Tops[i + 1].X);
+                y += (Tops[i].Y + Tops[i + 1].Y);
             }
-            return new Vertex(x / coef, y / coef);
+            x += (Tops[0].X + Tops[Tops.Count - 1].X);
+            y += (Tops[0].Y + Tops[Tops.Count - 1].Y);
+            return new Vertex(x / Tops.Count, y / Tops.Count);
         }
 
         public Vertex GetCentroidForFrame()
@@ -87,7 +88,7 @@ namespace Triangulation.Core
             for (int i = 0; i < Tops.Count - 1; i++)
                 square += Tops[i].X * Tops[i + 1].Y - Tops[i + 1].X * Tops[i].Y;
             square += Tops[_countOfTopsForTriangulation - 1].X * Tops[0].Y - Tops[0].X * Tops[_countOfTopsForTriangulation - 1].Y;
-            return square;
+            return square / 2;
         }
 
         public double GetPerimeter()

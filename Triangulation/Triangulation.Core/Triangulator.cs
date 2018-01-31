@@ -26,7 +26,8 @@ namespace Triangulation.Core
                 var current = _polygon.GetCurrentTop();
                 var next = _polygon.GetNextTop();
                 var previous = _polygon.GetPreviousTop();
-                var isOk = IsLeft(previous, current, next) && CanBuildTriangle(previous, current, next);
+                var isOk = IsLeft(previous, current, next) 
+                    && CanBuildTriangle(previous, current, next);
                 if (isOk)
                 {
                     _polygon.Triangles.Add(new Triangle(new List<Vertex>

@@ -72,7 +72,7 @@ namespace Triangulation.UI
                     points[j] = new PointF((float)top.X, (float)top.Y);
                     j++;
                 }
-                g.DrawPolygon(new Pen(new SolidBrush(Color.Black)), points);
+                g.DrawPolygon(new Pen(new SolidBrush(Color.Black), 2), points);
                 g.FillPolygon(new SolidBrush(_colorsForTriangles[i]), points);
                 i++;
                 i = i % 3 == 0 ? 0 : i;
@@ -86,8 +86,8 @@ namespace Triangulation.UI
             var centrForTops = polygon.GetCentroidForTops();
 
             g.FillEllipse(new SolidBrush(Color.Violet), (float)centrForFrame.X, (float)centrForFrame.Y, 10, 10);
-            g.FillEllipse(new SolidBrush(Color.Black), (float)centrForBody.X, (float)centrForBody.Y, 10, 10);
-            g.FillEllipse(new SolidBrush(Color.YellowGreen), (float)centrForTops.X, (float)centrForTops.Y, 10, 10);
+            g.FillEllipse(new SolidBrush(Color.Black), (float)centrForBody.X, (float)centrForBody.Y, 12, 12);
+            g.FillEllipse(new SolidBrush(Color.YellowGreen), (float)centrForTops.X, (float)centrForTops.Y, 14, 14);
             _polygonTops = new List<Vertex>();
         }
 
