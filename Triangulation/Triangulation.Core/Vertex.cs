@@ -2,7 +2,7 @@
 
 namespace Triangulation.Core
 {
-    public class Vertex : IComparable, ICloneable
+    public class Vertex : IComparable, ICloneable, IEquatable<Vertex>
     {
         public double X { get; private set; }
         public double Y { get; private set; }
@@ -12,6 +12,17 @@ namespace Triangulation.Core
             X = x;
             Y = y;
         }
+
+        public bool Equals(Vertex other)
+        {
+            if (other is null)
+                return false; 
+            if (ReferenceEquals(this, other))
+                return true; 
+            return X.Equals(other.X) && Y.Equals(other.Y);
+        }
+
+        public override int GetHashCode() => X.GetHashCode() ^ Y.GetHashCode();
 
         public int CompareTo(object obj)
         {

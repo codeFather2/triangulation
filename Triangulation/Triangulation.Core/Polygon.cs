@@ -8,28 +8,24 @@ namespace Triangulation.Core
 {
     public class Polygon: ICloneable
     {
-        public List<Vertex> Tops { get;set; }
         public List<Triangle> Triangles { get; set; }
-        public List<Vertex> TopsForTriangulating { get; private set; }
-        private int _currentIndex;
-        private int _countOfTopsForTriangulation;
+        public List<Vertex> Tops { get;set; }
+        public List<Vertex> TopsForMove { get; private set; }
+        private int _moverPosition;
 
         public Polygon(List<Vertex> tops)
         {
-            Tops = tops;
-            TopsForTriangulating = new List<Vertex>(tops);
+            Tops = tops.Distinct().ToList();            
             Triangles = new List<Triangle>();
-            _countOfTopsForTriangulation = tops.Count;
-            _currentIndex = 0;
+            ResetMover();            
         } 
         
         public void Reverse()
         {
             Tops.Reverse();
-            TopsForTriangulating.Reverse();
+            TopsForMove.Reverse();
         }
 
-        #region Centroids
         public virtual Vertex GetCentroidForTops()
         {
             double x = 0;
@@ -44,111 +40,121 @@ namespace Triangulation.Core
 
         public Vertex GetCentroidForFrame()
         {
-            if(Tops.Count < 3)
-                return new Vertex(0, 0);
-            var perimeter = GetPerimeter();
+            ResetMover();
+            var perimeter = 0.0;
             double length;
             Vertex vectorMiddle;
             double resultX = 0.0;
             double resultY = 0.0;
-            for (int i = 0; i < Tops.Count - 1; i++)
+            for (int i = 0; i < Tops.Count; i++)
             {
-                length = Geometry.GetEuclidianDistance(Tops[i], Tops[i + 1]);
-                vectorMiddle = Geometry.GetMiddleBetween(Tops[i], Tops[i + 1]);
+                length = Geometry.GetEuclidianDistance(GetCurrentTop(), GetNextTop());
+                perimeter += length;
+                vectorMiddle = Geometry.GetMiddleBetween(GetCurrentTop(), GetNextTop());
                 resultX += vectorMiddle.X * length;
                 resultY += vectorMiddle.Y * length;
+                MoveNext();
             }
-            length = Geometry.GetEuclidianDistance(Tops[0], Tops[Tops.Count - 1]);
-            vectorMiddle = Geometry.GetMiddleBetween(Tops[0], Tops[Tops.Count - 1]);
-            resultX += vectorMiddle.X * length;
-            resultY += vectorMiddle.Y * length;
-
             return new Vertex(resultX / perimeter, resultY / perimeter);
         }
 
         public Vertex GetCentroidForBody()
         {
             if (Tops.Count < 3)
-                return new Vertex(0, 0);
-            var square = GetSquare();
+                return GetCentroidForFrame();
+            double square = 0.0;
             double x, y;
             x = y = 0;
             foreach(Triangle triangle in Triangles)
             {
                 var triangleCentroid = triangle.GetCentroidForTops();
                 var tiangleSquare = triangle.GetSquare();
+                square += tiangleSquare;
                 x += (triangleCentroid.X * tiangleSquare);
                 y += (triangleCentroid.Y * tiangleSquare);
             }
             return new Vertex(x / square, y / square);
         }
-        #endregion
 
         public virtual double GetSquare()
         {
+            ResetMover();
             if (Tops.Count <= 2)
                 return 0;
             double square = 0.0;
-            for (int i = 0; i < Tops.Count - 1; i++)
-                square += Tops[i].X * Tops[i + 1].Y - Tops[i + 1].X * Tops[i].Y;
-            square += Tops[Tops.Count - 1].X * Tops[0].Y - Tops[0].X * Tops[Tops.Count - 1].Y;
+            for (int i = 0; i < Tops.Count; i++)
+            {
+                var current = GetCurrentTop();
+                var next = GetNextTop();
+                square += current.X * next.Y - next.X * current.Y;
+                MoveNext();
+            }
             return square / 2;
         }
 
         public double GetPerimeter()
         {
+            ResetMover();
             if (Tops.Count < 2)
                 return 0;
             double result = 0.0;
-            for (int i = 0; i <= Tops.Count - 2; i++)
-                result += Geometry.GetEuclidianDistance(Tops[i], Tops[i + 1]);
-            result += Geometry.GetEuclidianDistance(Tops[0], Tops[_countOfTopsForTriangulation - 1]);
+            for (int i = 0; i <= Tops.Count; i++)
+            {
+                result += Geometry.GetEuclidianDistance(GetCurrentTop(), GetNextTop());
+                MoveNext();
+            }
             return result;
         }
         
-        #region MoveByTops
-
         public Vertex GetCurrentTop()
         {
-            if (_currentIndex == _countOfTopsForTriangulation)
+            if (_moverPosition == TopsForMove.Count)
             {
-                _currentIndex = 0;
-                return TopsForTriangulating[_countOfTopsForTriangulation - 1];
+                _moverPosition = 0;
+                return TopsForMove[TopsForMove.Count - 1];
             }
-            return TopsForTriangulating[_currentIndex];
+            return TopsForMove[_moverPosition];
         }
 
         public Vertex GetNextTop()
         {
-            if (_currentIndex == _countOfTopsForTriangulation - 1)
-                return TopsForTriangulating[0];
-            return TopsForTriangulating[_currentIndex + 1];
+            if (_moverPosition == TopsForMove.Count - 1)
+                return TopsForMove[0];
+            return TopsForMove[_moverPosition + 1];
         }
 
         public Vertex GetPreviousTop()
         {
-            if (_currentIndex == 0)
-                return TopsForTriangulating[_countOfTopsForTriangulation - 1];
-            return TopsForTriangulating[_currentIndex - 1];
+            if (_moverPosition == 0)
+                return TopsForMove[TopsForMove.Count - 1];
+            return TopsForMove[_moverPosition - 1];
         }
 
         public void RemoveCurrentTop()
         {
-            TopsForTriangulating.RemoveAt(_currentIndex);
-            _countOfTopsForTriangulation--;
-            _currentIndex = _currentIndex == 0 ? _currentIndex : _currentIndex - 1;
+            TopsForMove.RemoveAt(_moverPosition);
+            _moverPosition = _moverPosition == 0 ? _moverPosition : _moverPosition - 1;
         }
-        #endregion
 
         public bool HasTriangles()
         {
-            _currentIndex++;
-            return _countOfTopsForTriangulation > 2;
+            return TopsForMove.Count > 2;
+        }
+        
+        public void MoveNext()
+        {
+            _moverPosition++; 
+        }
+
+        private void ResetMover()
+        {
+            _moverPosition = 0;
+            TopsForMove = TopsForMove?.Count == Tops.Count ? TopsForMove : new List<Vertex>(Tops);
         }
 
         public int CurrentIndex()
         {
-            return _currentIndex;
+            return _moverPosition;
         }
 
         public object Clone()

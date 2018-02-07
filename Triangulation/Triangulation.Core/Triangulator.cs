@@ -19,6 +19,11 @@ namespace Triangulation.Core
 
         public Polygon Triangulate()
         {
+            if(_polygon.Tops.Count == 3)
+            {
+                _polygon.Triangles.Add(new Triangle(_polygon.Tops));
+                return _polygon;
+            }
             if (_polygon.Tops.Count < 3)
                 return _polygon;
             if (_polygon.GetSquare() < 0)
@@ -38,6 +43,7 @@ namespace Triangulation.Core
                     }));
                     _polygon.RemoveCurrentTop();
                 }
+                _polygon.MoveNext();
             }
             return _polygon;
         }
@@ -54,7 +60,7 @@ namespace Triangulation.Core
 
         private bool CanBuildTriangle(Vertex pointA, Vertex basePoint, Vertex pointB)
         {
-            var tops = _polygon.TopsForTriangulating.Where(x => x != basePoint && x != pointA && x != pointB).ToList();
+            var tops = _polygon.TopsForMove.Where(x => x != basePoint && x != pointA && x != pointB).ToList();
             for (int i = 0; i < tops.Count; i++)
                     if (IsPointInside(pointA, basePoint, pointB, tops[i]))
                         return false;

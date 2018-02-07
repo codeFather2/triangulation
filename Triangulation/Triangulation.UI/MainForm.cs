@@ -52,7 +52,7 @@ namespace Triangulation.UI
                 g.DrawLine(new Pen(new SolidBrush(Color.Black)), point, _points.Last());
             }
             _points.Add(e.Location);
-            if (_points.Count >= 4)
+            if (_points.Count >= 2)
                 TriangulateButton.Enabled = true;
         }
 
