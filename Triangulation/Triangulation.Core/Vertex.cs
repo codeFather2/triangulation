@@ -2,7 +2,7 @@
 
 namespace Triangulation.Core
 {
-    public class Vertex : IComparable, ICloneable, IEquatable<Vertex>
+    public struct Vertex : IComparable, ICloneable, IEquatable<Vertex>
     {
         public double X { get; private set; }
         public double Y { get; private set; }
@@ -14,11 +14,7 @@ namespace Triangulation.Core
         }
 
         public bool Equals(Vertex other)
-        {
-            if (other is null)
-                return false; 
-            if (ReferenceEquals(this, other))
-                return true; 
+        { 
             return X.Equals(other.X) && Y.Equals(other.Y);
         }
 
@@ -26,12 +22,11 @@ namespace Triangulation.Core
 
         public int CompareTo(object obj)
         {
-            var tolerance = 0.001;
             if (!(obj is Vertex compareTo))
                 return 1;
             bool biggerByY = Y > compareTo.Y;
-            bool biggerByX = Math.Abs(Y - compareTo.Y) < tolerance && X > compareTo.X;
-            bool isEqual = Math.Abs(Y - compareTo.Y) < tolerance && Math.Abs(X - compareTo.X) < tolerance;
+            bool biggerByX = X > compareTo.X;
+            bool isEqual = Math.Abs(Y - compareTo.Y) < Constants.TOLERANCE && Math.Abs(X - compareTo.X) < Constants.TOLERANCE;
             if (isEqual)
             {
                 return 0;

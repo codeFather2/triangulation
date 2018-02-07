@@ -60,7 +60,7 @@ namespace Triangulation.Core
 
         private bool CanBuildTriangle(Vertex pointA, Vertex basePoint, Vertex pointB)
         {
-            var tops = _polygon.TopsForMove.Where(x => x != basePoint && x != pointA && x != pointB).ToList();
+            var tops = _polygon.TopsForMove.Where(x => !x.Equals(basePoint) && !x.Equals(pointA) && !x.Equals(pointB)).ToList();
             for (int i = 0; i < tops.Count; i++)
                     if (IsPointInside(pointA, basePoint, pointB, tops[i]))
                         return false;

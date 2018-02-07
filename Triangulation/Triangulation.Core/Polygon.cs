@@ -164,7 +164,7 @@ namespace Triangulation.Core
             List<Vertex> tops = new List<Vertex>();
             foreach (var top in Tops)
             {
-                tops.Add((Vertex)top.Clone());
+                tops.Add(top);
             }
             foreach (var triangle in Triangles)
             {
